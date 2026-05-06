@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: glpi_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: glpi
+      MYSQL_USER: glpi
+      MYSQL_PASSWORD: glpi
+    volumes:
+      - db_data:/var/lib/mysql
+
+  glpi:
+    image: diouxx/glpi
+    container_name: glpi_app
+    restart: always
+    ports:
+      - "8090:80"
+    depends_on:
+      - db
+    environment:
+      TIMEZONE: Africa/Abidjan
+    volumes:
+      - glpi_data:/var/www/html
+
+volumes:
+  db_data:
+  glpi_data:
