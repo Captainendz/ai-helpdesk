@@ -43,13 +43,3 @@ def find_user(username):
             return user
 
     return None
-
-
-user = find_user("normal")
-
-if user:
-    print("User found")
-    print("ID:", user["id"])
-    print("Username:", user["name"])
-else:
-    print("User not found")

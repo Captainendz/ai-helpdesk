@@ -1,3 +1,6 @@
+from glpi_lookup import find_user
+
+
 def enrich_issue(issue, level, priority):
     text = issue.lower()
 
@@ -22,10 +25,17 @@ def enrich_issue(issue, level, priority):
     elif "boot" in text or "start" in text or "dead" in text:
         issue_type = "device boot failure"
 
+    user = find_user("normal")
+
+    if user:
+        username = user["name"]
+    else:
+        username = "unknown"
+
     summary = issue[:80]
 
     enriched = {
-        "user": "bello.nuhu@company.com",
+        "user": username,
         "device": device,
         "issue_type": issue_type,
         "urgency": priority,
