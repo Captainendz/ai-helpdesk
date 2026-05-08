@@ -43,3 +43,24 @@ def find_user(username):
             return user
 
     return None
+
+
+def get_computers():
+    headers = get_session_headers()
+
+    response = requests.get(
+        f"{GLPI_URL}/Computer",
+        headers=headers
+    )
+
+    return response.json()
+
+
+def find_computer(name):
+    computers = get_computers()
+
+    for computer in computers:
+        if computer["name"].lower() == name.lower():
+            return computer
+
+    return None

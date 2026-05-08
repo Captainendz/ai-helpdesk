@@ -1,14 +1,14 @@
-from glpi_lookup import find_user
+from glpi_lookup import find_user, find_computer
 
 
 def enrich_issue(issue, level, priority):
     text = issue.lower()
 
     issue_type = "general issue"
-    device = "unknown"
+    detected_device = "unknown"
 
     if "laptop" in text or "pc" in text or "computer" in text:
-        device = "computer"
+        detected_device = "computer"
 
     if "wifi" in text or "network" in text:
         issue_type = "network issue"
@@ -31,6 +31,13 @@ def enrich_issue(issue, level, priority):
         username = user["name"]
     else:
         username = "unknown"
+
+    computer = find_computer("CEO-LAPTOP-01")
+
+    if computer:
+        device = computer["name"]
+    else:
+        device = detected_device
 
     summary = issue[:80]
 
