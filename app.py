@@ -2,6 +2,7 @@ import streamlit as st
 from classifier import classify_issue
 from rag import search_solution
 from glpi_api import create_ticket
+from enrichment import enrich_issue
 from datetime import datetime
 
 st.set_page_config(page_title="AI Helpdesk", layout="wide")
@@ -24,13 +25,23 @@ if st.button("Submit"):
         st.info(f"Support Level: {level}")
         st.info(f"Priority: {priority}")
 
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        enriched = enrich_issue(issue, level, priority)
 
-        enriched_issue = f"""
-Time: {timestamp}
-Original complaint: {issue}
-Predicted support level: {level}
-Predicted priority: {priority}
+        st.subheader("Enriched Request")
+        st.write(f"User: {enriched['user']}")
+        st.write(f"Device: {enriched['device']}")
+        st.write(f"Issue Type: {enriched['issue_type']}")
+        st.write(f"Urgency: {enriched['urgency']}")
+        st.write(f"Summary: {enriched['summary']}")
+
+        ticket_content = f"""
+Time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+User: {enriched['user']}
+Device: {enriched['device']}
+Issue Type: {enriched['issue_type']}
+Urgency: {enriched['urgency']}
+Summary: {enriched['summary']}
+Original Complaint: {enriched['original_complaint']}
 """
 
         if level == "L1":
@@ -46,7 +57,7 @@ Predicted priority: {priority}
 
                 result = create_ticket(
                     title="AI Helpdesk Escalation",
-                    content=enriched_issue
+                    content=ticket_content
                 )
 
                 st.success(f"Ticket created in GLPI. Ticket ID: {result.get('id')}")
@@ -56,7 +67,7 @@ Predicted priority: {priority}
 
             result = create_ticket(
                 title="AI Helpdesk Escalation",
-                content=enriched_issue
+                content=ticket_content
             )
 
             st.success(f"Ticket created in GLPI. Ticket ID: {result.get('id')}")
