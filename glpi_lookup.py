@@ -64,3 +64,13 @@ def find_computer(name):
             return computer
 
     return None
+
+
+def find_computer_by_keyword(keyword):
+    computers = get_computers()
+
+    for computer in computers:
+        if keyword.lower() in computer["name"].lower():
+            return computer
+
+    return None
