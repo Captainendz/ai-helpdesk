@@ -60,7 +60,10 @@ Original Complaint: {enriched['original_complaint']}
                     content=ticket_content
                 )
 
-                st.success(f"Ticket created in GLPI. Ticket ID: {result.get('id')}")
+                if "id" in result:
+                    st.success(f"Ticket created in GLPI. Ticket ID: {result.get('id')}")
+                else:
+                    st.error("Ticket creation failed.")
 
         else:
             st.error("Escalation required.")
@@ -70,4 +73,7 @@ Original Complaint: {enriched['original_complaint']}
                 content=ticket_content
             )
 
-            st.success(f"Ticket created in GLPI. Ticket ID: {result.get('id')}")
+            if "id" in result:
+                st.success(f"Ticket created in GLPI. Ticket ID: {result.get('id')}")
+            else:
+                st.error("Ticket creation failed.")
