@@ -28,7 +28,7 @@ def get_session_headers():
     return headers
 
 
-def find_user(username):
+def get_users():
     headers = get_session_headers()
 
     response = requests.get(
@@ -36,7 +36,31 @@ def find_user(username):
         headers=headers
     )
 
-    users = response.json()
+    return response.json()
+
+
+def find_user(username):
+    users = get_users()
+
+    for user in users:
+        if user["name"].lower() == username.lower():
+            return user
+
+    return None
+
+
+def find_user_by_email(email):
+    users = get_users()
+
+    email_map = {
+        "nuhu.bello@orange.com": "ceo",
+        "finance.manager@orange.com": "finance.manager"
+    }
+
+    username = email_map.get(email.lower())
+
+    if not username:
+        return None
 
     for user in users:
         if user["name"].lower() == username.lower():

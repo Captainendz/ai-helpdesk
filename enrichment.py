@@ -1,42 +1,31 @@
-from glpi_lookup import find_user, find_computer_by_keyword
+from glpi_lookup import find_user_by_email, find_computer_by_keyword
 
 
-def enrich_issue(issue, level, priority):
+def enrich_issue(sender_email, issue, level, priority):
     text = issue.lower()
 
     issue_type = "general issue"
     username = "unknown"
     device = "unknown"
 
-    # ---------- Detect user ----------
-    if "ceo" in text:
-        user = find_user("ceo")
-    elif "finance" in text:
-        user = find_user("finance.manager")
-    else:
-        user = find_user("normal")
+    # ---------- Identify sender ----------
+    user = find_user_by_email(sender_email)
 
     if user:
         username = user["name"]
 
-    # ---------- Detect device ----------
-    if "ceo" in text:
+    # ---------- Device mapping ----------
+    if username == "ceo":
         computer = find_computer_by_keyword("CEO")
-    elif "finance" in text:
+    elif username == "finance.manager":
         computer = find_computer_by_keyword("FINANCE")
-    elif "hr" in text:
-        computer = find_computer_by_keyword("HR")
-    elif "smc" in text:
-        computer = find_computer_by_keyword("SMC_IT")
-    elif "data" in text or "ai" in text:
-        computer = find_computer_by_keyword("DATA")
     else:
         computer = None
 
     if computer:
         device = computer["name"]
 
-    # ---------- Detect issue type ----------
+    # ---------- Issue type ----------
     if "wifi" in text or "network" in text:
         issue_type = "network issue"
 
@@ -55,12 +44,14 @@ def enrich_issue(issue, level, priority):
     summary = issue[:80]
 
     enriched = {
-        "user": username,
-        "device": device,
-        "issue_type": issue_type,
-        "urgency": priority,
-        "summary": summary,
-        "original_complaint": issue
-    }
+    "user": username,
+    "user_id": user["id"] if user else None,
+    "device": device,
+    "issue_type": issue_type,
+    "urgency": priority,
+    "summary": summary,
+    "original_complaint": issue,
+    "resolution_source": sender_email
+}
 
     return enriched

@@ -10,6 +10,7 @@ st.set_page_config(page_title="AI Helpdesk", layout="wide")
 st.title("🤖 AI Helpdesk + GLPI")
 
 issue = st.text_area("Describe your IT problem:")
+sender_email = st.text_input("Sender email:")
 
 if st.button("Submit"):
 
@@ -25,9 +26,10 @@ if st.button("Submit"):
         st.info(f"Support Level: {level}")
         st.info(f"Priority: {priority}")
 
-        enriched = enrich_issue(issue, level, priority)
+        enriched = enrich_issue(sender_email, issue, level, priority)
 
         st.subheader("Enriched Request")
+        st.write(f"Resolved From: {enriched['resolution_source']}")
         st.write(f"User: {enriched['user']}")
         st.write(f"Device: {enriched['device']}")
         st.write(f"Issue Type: {enriched['issue_type']}")
@@ -57,7 +59,8 @@ Original Complaint: {enriched['original_complaint']}
 
                 result = create_ticket(
                     title="AI Helpdesk Escalation",
-                    content=ticket_content
+                    content=ticket_content,
+                    user_id=enriched["user_id"]
                 )
 
                 if "id" in result:
@@ -70,7 +73,8 @@ Original Complaint: {enriched['original_complaint']}
 
             result = create_ticket(
                 title="AI Helpdesk Escalation",
-                content=ticket_content
+                content=ticket_content,
+                user_id=enriched["user_id"]
             )
 
             if "id" in result:

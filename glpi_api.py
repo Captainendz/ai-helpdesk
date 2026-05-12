@@ -9,7 +9,7 @@ USER_TOKEN = os.getenv("USER_TOKEN")
 APP_TOKEN = os.getenv("APP_TOKEN")
 
 
-def create_ticket(title, content):
+def get_headers():
     headers = {
         "Authorization": f"user_token {USER_TOKEN}",
         "App-Token": APP_TOKEN,
@@ -25,11 +25,24 @@ def create_ticket(title, content):
 
     headers["Session-Token"] = session_token
 
+    return headers
+
+
+def create_ticket(title, content, user_id=None):
+
+    headers = get_headers()
+
+    ticket_input = {
+        "name": title,
+        "content": content
+    }
+
+    # ---------- Attach requester ----------
+    if user_id:
+        ticket_input["_users_id_requester"] = user_id
+
     ticket_data = {
-        "input": {
-            "name": title,
-            "content": content
-        }
+        "input": ticket_input
     }
 
     response = requests.post(
