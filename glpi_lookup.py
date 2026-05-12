@@ -90,11 +90,40 @@ def find_computer(name):
     return None
 
 
-def find_computer_by_keyword(keyword):
+##def find_computer_by_keyword(keyword):
     computers = get_computers()
 
+    ##for computer in computers:
+        ##if keyword.lower() in computer["name"].lower():
+            ##return computer
+
+    ##return None
+
+def find_user_computer(user_id):
+
+    headers = get_session_headers()
+
+    response = requests.get(
+        f"{GLPI_URL}/Computer",
+        headers=headers
+    )
+
+    computers = response.json()
+
     for computer in computers:
-        if keyword.lower() in computer["name"].lower():
-            return computer
+
+        computer_id = computer["id"]
+
+        detail_response = requests.get(
+            f"{GLPI_URL}/Computer/{computer_id}",
+            headers=headers
+        )
+
+        details = detail_response.json()
+
+        users_id = details.get("users_id")
+
+        if users_id == user_id:
+            return details
 
     return None

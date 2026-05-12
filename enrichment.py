@@ -1,4 +1,4 @@
-from glpi_lookup import find_user_by_email, find_computer_by_keyword
+from glpi_lookup import find_user_by_email, find_user_computer
 
 
 def enrich_issue(sender_email, issue, level, priority):
@@ -15,12 +15,11 @@ def enrich_issue(sender_email, issue, level, priority):
         username = user["name"]
 
     # ---------- Device mapping ----------
-    if username == "ceo":
-        computer = find_computer_by_keyword("CEO")
-    elif username == "finance.manager":
-        computer = find_computer_by_keyword("FINANCE")
+    # ---------- Dynamic GLPI asset lookup ----------
+    if user:
+        computer = find_user_computer(user["id"])
     else:
-        computer = None
+            computer = None
 
     if computer:
         device = computer["name"]
