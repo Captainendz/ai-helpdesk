@@ -1,42 +1,34 @@
 [
     {
-        "keyword": "password",
-        "solution": "To reset your password: Press Ctrl + Alt + Delete and choose Change Password."
-    },
-    {
-        "keyword": "wifi",
-        "solution": "Restart Wi-Fi adapter, reconnect to network, then restart your PC."
-    },
-    {
-        "keyword": "printer",
-        "solution": "Check printer power, cables, and set it as default printer."
-    },
-    {
-        "keyword": "email",
-        "solution": "Check Outlook connection and restart the mail application."
-    },
-    {
-        "keyword": "vpn",
+        "problem": "vpn connection issue remote access not working",
         "solution": "Verify internet connection, then reconnect to VPN client."
     },
     {
-        "keyword": "login",
-        "solution": "Ensure correct username/password and Caps Lock is off."
+        "problem": "wifi internet network connection problem",
+        "solution": "Restart Wi-Fi adapter, reconnect to network, then restart your PC."
     },
     {
-        "keyword": "slow",
+        "problem": "printer not printing printer offline",
+        "solution": "Check printer power, cables, and set it as default printer."
+    },
+    {
+        "problem": "email outlook mail issue",
+        "solution": "Check Outlook connection and restart the mail application."
+    },
+    {
+        "problem": "password reset login authentication issue",
+        "solution": "Press Ctrl + Alt + Delete and choose Change Password."
+    },
+    {
+        "problem": "computer slow performance lagging",
         "solution": "Restart the computer and close unnecessary background applications."
     },
     {
-        "keyword": "network",
-        "solution": "Check network cable or restart the router and reconnect."
-    },
-    {
-        "keyword": "outlook",
-        "solution": "Restart Outlook and verify internet connectivity."
-    },
-    {
-        "keyword": "keyboard",
+        "problem": "keyboard not working typing issue",
         "solution": "Reconnect the keyboard or replace batteries if wireless."
+    },
+    {
+        "problem": "device not booting dead computer startup issue",
+        "solution": "Check power supply and restart the device safely."
     }
 ]
