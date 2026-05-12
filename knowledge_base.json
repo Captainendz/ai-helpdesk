@@ -1,0 +1,42 @@
+[
+    {
+        "keyword": "password",
+        "solution": "To reset your password: Press Ctrl + Alt + Delete and choose Change Password."
+    },
+    {
+        "keyword": "wifi",
+        "solution": "Restart Wi-Fi adapter, reconnect to network, then restart your PC."
+    },
+    {
+        "keyword": "printer",
+        "solution": "Check printer power, cables, and set it as default printer."
+    },
+    {
+        "keyword": "email",
+        "solution": "Check Outlook connection and restart the mail application."
+    },
+    {
+        "keyword": "vpn",
+        "solution": "Verify internet connection, then reconnect to VPN client."
+    },
+    {
+        "keyword": "login",
+        "solution": "Ensure correct username/password and Caps Lock is off."
+    },
+    {
+        "keyword": "slow",
+        "solution": "Restart the computer and close unnecessary background applications."
+    },
+    {
+        "keyword": "network",
+        "solution": "Check network cable or restart the router and reconnect."
+    },
+    {
+        "keyword": "outlook",
+        "solution": "Restart Outlook and verify internet connectivity."
+    },
+    {
+        "keyword": "keyboard",
+        "solution": "Reconnect the keyboard or replace batteries if wireless."
+    }
+]
