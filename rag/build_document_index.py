@@ -4,8 +4,8 @@ import pickle
 
 from sentence_transformers import SentenceTransformer
 
-from document_loader import load_documents
-from chunker import chunk_text
+from rag.document_loader import load_documents
+from rag.chunker import chunk_text
 
 # ---------- Load embedding model ----------
 model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -45,10 +45,10 @@ index = faiss.IndexFlatL2(dimension)
 index.add(embedding_matrix)
 
 # ---------- Save FAISS index ----------
-faiss.write_index(index, "document_index.faiss")
+faiss.write_index(index, "data/document_index.faiss")
 
 # ---------- Save chunk metadata ----------
-with open("document_chunks.pkl", "wb") as file:
+with open("data/document_chunks.pkl", "wb") as file:
 
     pickle.dump(all_chunks, file)
 

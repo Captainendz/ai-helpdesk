@@ -8,10 +8,10 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # ---------- Load FAISS index ----------
-index = faiss.read_index("document_index.faiss")
+index = faiss.read_index("data/document_index.faiss")
 
 # ---------- Load chunk metadata ----------
-with open("document_chunks.pkl", "rb") as file:
+with open("data/document_chunks.pkl", "rb") as file:
 
     chunks = pickle.load(file)
 

@@ -1,8 +1,8 @@
 import streamlit as st
-from classifier import classify_issue
-from document_rag import search_documents
-from glpi_api import create_ticket
-from enrichment import enrich_issue
+from ai.classifier import classify_issue
+from rag.document_rag import search_documents
+from api.glpi_api import create_ticket
+from ai.enrichment import enrich_issue
 from datetime import datetime
 
 st.set_page_config(page_title="AI Helpdesk", layout="wide")
