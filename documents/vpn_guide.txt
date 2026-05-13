@@ -1,0 +1,14 @@
+VPN Troubleshooting Guide
+
+If remote access is not working:
+
+1. Verify internet connectivity.
+2. Restart the VPN client.
+3. Re-enter company VPN credentials.
+4. Ensure MFA authentication is approved.
+5. Contact IT support if issue persists.
+
+Common VPN errors:
+- Authentication failure
+- Timeout connection
+- Gateway unreachable
