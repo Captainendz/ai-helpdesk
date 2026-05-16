@@ -1,4 +1,4 @@
-from document_loader import load_documents
+from rag.document_loader import load_documents
 
 
 def chunk_text(text, chunk_size=120):

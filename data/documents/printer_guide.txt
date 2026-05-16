@@ -1,0 +1,4 @@
+If printer is offline:
+1. Restart printer
+2. Check network cable
+3. Reinstall printer driver

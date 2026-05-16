@@ -1,4 +1,5 @@
 import streamlit as st
+from ai.llm_generator import generate_response
 from ai.classifier import classify_issue
 from rag.document_rag import search_documents
 from api.glpi_api import create_ticket
@@ -47,6 +48,10 @@ if st.button("Submit"):
         if document_result:
 
             solution_text = document_result["content"].lower()
+            ai_response = generate_response(
+                issue,
+                solution_text
+            )
 
             if "vpn" in solution_text:
                 enriched["issue_type"] = "vpn issue"
@@ -100,7 +105,10 @@ Original Complaint: {enriched['original_complaint']}
                 st.subheader("Knowledge Source")
                 st.write(document_result["source"])
 
-                st.subheader("Suggested Solution")
+                st.subheader("AI Generated Resolution")
+                st.write(ai_response)
+
+                st.subheader("Knowledge Base Match")
                 st.write(document_result["content"])
 
             else:
