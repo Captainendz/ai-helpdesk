@@ -1,0 +1,9 @@
+Performance Troubleshooting Guide
+
+If the computer is slow:
+
+1. Restart the device.
+2. Close unused applications.
+3. Check available disk space.
+4. Run antivirus scan.
+5. Upgrade RAM if performance remains poor.

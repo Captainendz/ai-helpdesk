@@ -1,0 +1,9 @@
+Email Troubleshooting Guide
+
+If Outlook email is not syncing:
+
+1. Restart Outlook.
+2. Verify internet connectivity.
+3. Re-enter mailbox credentials.
+4. Check mailbox storage quota.
+5. Contact Messaging Team if issue continues.

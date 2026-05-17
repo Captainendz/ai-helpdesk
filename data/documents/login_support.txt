@@ -1,0 +1,9 @@
+Authentication Troubleshooting Guide
+
+If login fails:
+
+1. Verify username and password.
+2. Ensure CAPS LOCK is disabled.
+3. Reset password if necessary.
+4. Verify account is not locked.
+5. Contact Identity Management team if issue persists.

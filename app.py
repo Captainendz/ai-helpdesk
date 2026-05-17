@@ -109,9 +109,6 @@ Original Complaint: {enriched['original_complaint']}
                 st.subheader("AI Generated Resolution")
                 st.write(ai_response)
 
-                st.subheader("Knowledge Base Match")
-                st.write(document_result["content"])
-
                 st.subheader("Knowledge Source")
                 st.write(document_result["source"])
 

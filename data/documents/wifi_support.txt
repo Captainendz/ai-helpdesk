@@ -1,0 +1,9 @@
+WiFi Troubleshooting Guide
+
+If WiFi disconnects frequently:
+
+1. Restart the router.
+2. Forget and reconnect to WiFi network.
+3. Move closer to the router.
+4. Update network drivers.
+5. Contact Network Team if issue continues.

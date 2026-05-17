@@ -1,0 +1,9 @@
+Printer Troubleshooting Guide
+
+If the printer is not printing:
+
+1. Ensure printer is powered on.
+2. Verify printer cable or WiFi connection.
+3. Restart the printer.
+4. Clear pending print queue.
+5. Reinstall printer drivers if necessary.
