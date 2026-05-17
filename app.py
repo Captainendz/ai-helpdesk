@@ -1,4 +1,5 @@
 import streamlit as st
+from ai.router import route_issue
 from ai.llm_generator import generate_response
 from ai.classifier import classify_issue
 from rag.document_rag import search_documents
@@ -44,35 +45,20 @@ if st.button("Submit"):
         # ---------- Search Document Vector DB ----------
         document_result = search_documents(issue)
 
-        # ---------- Semantic Issue Typing ----------
-        if document_result:
+        # ---------- Confidence Threshold ----------
+        CONFIDENCE_THRESHOLD = 1.0
 
-            solution_text = document_result["content"].lower()
-            ai_response = generate_response(
-                issue,
-                solution_text
-            )
+        # =========================================================
+        # IMPORTANT:
+        # DO NOT overwrite issue_type using document_result content
+        # The enrichment.py already detects issue type correctly
+        # from the user's original complaint.
+        # =========================================================
 
-            if "vpn" in solution_text:
-                enriched["issue_type"] = "vpn issue"
-
-            elif "printer" in solution_text:
-                enriched["issue_type"] = "printer issue"
-
-            elif "outlook" in solution_text or "mail" in solution_text:
-                enriched["issue_type"] = "email issue"
-
-            elif "network" in solution_text or "wifi" in solution_text:
-                enriched["issue_type"] = "network issue"
-
-            elif "password" in solution_text or "login" in solution_text:
-                enriched["issue_type"] = "authentication issue"
-
-            elif "slow" in solution_text or "performance" in solution_text:
-                enriched["issue_type"] = "performance issue"
-
-            elif "boot" in solution_text or "startup" in solution_text:
-                enriched["issue_type"] = "device boot failure"
+        # ---------- Department Routing ----------
+        department = route_issue(
+            enriched["issue_type"]
+        )
 
         # ---------- Display Enrichment ----------
         st.subheader("Enriched Request")
@@ -81,6 +67,7 @@ if st.button("Submit"):
         st.write(f"User: {enriched['user']}")
         st.write(f"Device: {enriched['device']}")
         st.write(f"Issue Type: {enriched['issue_type']}")
+        st.write(f"Assigned Department: {department}")
         st.write(f"Urgency: {enriched['urgency']}")
         st.write(f"Summary: {enriched['summary']}")
 
@@ -90,6 +77,7 @@ Time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 User: {enriched['user']}
 Device: {enriched['device']}
 Issue Type: {enriched['issue_type']}
+Assigned Department: {department}
 Urgency: {enriched['urgency']}
 Summary: {enriched['summary']}
 Original Complaint: {enriched['original_complaint']}
@@ -98,12 +86,25 @@ Original Complaint: {enriched['original_complaint']}
         # ---------- L1 AI Resolution ----------
         if level == "L1":
 
-            if document_result:
+            if (
+                document_result
+                and document_result["distance"] < CONFIDENCE_THRESHOLD
+            ):
 
-                st.success("AI can attempt Level 1 resolution.")
+                st.success(
+                    "AI found a reliable knowledge base match."
+                )
 
-                st.subheader("Knowledge Source")
-                st.write(document_result["source"])
+                st.write(
+                    f"Vector Distance: "
+                    f"{document_result['distance']:.3f}"
+                )
+
+                # ---------- Generate AI Resolution ----------
+                ai_response = generate_response(
+                    issue,
+                    document_result["content"]
+                )
 
                 st.subheader("AI Generated Resolution")
                 st.write(ai_response)
@@ -111,9 +112,18 @@ Original Complaint: {enriched['original_complaint']}
                 st.subheader("Knowledge Base Match")
                 st.write(document_result["content"])
 
+                st.subheader("Knowledge Source")
+                st.write(document_result["source"])
+
             else:
 
-                st.error("No Level 1 solution found. Escalating...")
+                st.warning(
+                    "No reliable AI resolution found."
+                )
+
+                st.error(
+                    "Escalating issue to GLPI."
+                )
 
                 result = create_ticket(
                     title="AI Helpdesk Escalation",
@@ -124,7 +134,8 @@ Original Complaint: {enriched['original_complaint']}
                 if "id" in result:
 
                     st.success(
-                        f"Ticket created in GLPI. Ticket ID: {result.get('id')}"
+                        f"Ticket created in GLPI. "
+                        f"Ticket ID: {result.get('id')}"
                     )
 
                 else:
@@ -145,7 +156,8 @@ Original Complaint: {enriched['original_complaint']}
             if "id" in result:
 
                 st.success(
-                    f"Ticket created in GLPI. Ticket ID: {result.get('id')}"
+                    f"Ticket created in GLPI. "
+                    f"Ticket ID: {result.get('id')}"
                 )
 
             else:

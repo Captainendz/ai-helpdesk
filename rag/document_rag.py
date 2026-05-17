@@ -41,7 +41,8 @@ def search_documents(query):
 
         return {
             "source": best_chunk["source"],
-            "content": best_chunk["chunk"]
+            "content": best_chunk["chunk"],
+            "distance": float(best_distance)
         }
 
     return None

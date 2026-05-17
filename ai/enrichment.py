@@ -38,8 +38,26 @@ def enrich_issue(sender_email, issue, level, priority):
 
         device = computer["name"]
 
-    # ---------- Rule-based issue typing ----------
-    if "wifi" in text or "network" in text:
+    # ---------- Intelligent Issue Typing ----------
+    if (
+        "email" in text
+        or "outlook" in text
+        or "mail" in text
+    ):
+
+        issue_type = "email issue"
+
+    elif (
+        "vpn" in text
+        or "remote access" in text
+    ):
+
+        issue_type = "vpn issue"
+
+    elif (
+        "wifi" in text
+        or "network" in text
+    ):
 
         issue_type = "network issue"
 
@@ -47,23 +65,29 @@ def enrich_issue(sender_email, issue, level, priority):
 
         issue_type = "printer issue"
 
-    elif "email" in text or "outlook" in text:
-
-        issue_type = "email issue"
-
-    elif "vpn" in text or "remote access" in text:
-
-        issue_type = "vpn issue"
-
-    elif "password" in text or "login" in text:
+    elif (
+        "password" in text
+        or "login" in text
+        or "log in" in text
+        or "log into" in text
+        or "sign in" in text
+        or "signin" in text
+    ):
 
         issue_type = "authentication issue"
 
-    elif "slow" in text or "performance" in text:
+    elif (
+        "slow" in text
+        or "performance" in text
+    ):
 
         issue_type = "performance issue"
 
-    elif "boot" in text or "start" in text or "dead" in text:
+    elif (
+        "boot" in text
+        or "start" in text
+        or "dead" in text
+    ):
 
         issue_type = "device boot failure"
 
