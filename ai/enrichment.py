@@ -8,7 +8,7 @@ def enrich_issue(sender_email, issue, level, priority):
 
     text = issue.lower()
 
-    issue_type = "general issue"
+    issue_types = []
 
     username = "unknown"
 
@@ -38,34 +38,35 @@ def enrich_issue(sender_email, issue, level, priority):
 
         device = computer["name"]
 
-    # ---------- Intelligent Issue Typing ----------
+    # ---------- Multi-Issue Detection ----------
+
     if (
         "email" in text
         or "outlook" in text
         or "mail" in text
     ):
 
-        issue_type = "email issue"
+        issue_types.append("email issue")
 
-    elif (
+    if (
         "vpn" in text
         or "remote access" in text
     ):
 
-        issue_type = "vpn issue"
+        issue_types.append("vpn issue")
 
-    elif (
+    if (
         "wifi" in text
         or "network" in text
     ):
 
-        issue_type = "network issue"
+        issue_types.append("network issue")
 
-    elif "printer" in text:
+    if "printer" in text:
 
-        issue_type = "printer issue"
+        issue_types.append("printer issue")
 
-    elif (
+    if (
         "password" in text
         or "login" in text
         or "log in" in text
@@ -74,22 +75,30 @@ def enrich_issue(sender_email, issue, level, priority):
         or "signin" in text
     ):
 
-        issue_type = "authentication issue"
+        issue_types.append("authentication issue")
 
-    elif (
+    if (
         "slow" in text
         or "performance" in text
     ):
 
-        issue_type = "performance issue"
+        issue_types.append("performance issue")
 
-    elif (
+    if (
         "boot" in text
         or "start" in text
         or "dead" in text
     ):
 
-        issue_type = "device boot failure"
+        issue_types.append("device boot failure")
+
+    # ---------- Default ----------
+    if not issue_types:
+
+        issue_types.append("general issue")
+
+    # ---------- Primary Issue ----------
+    primary_issue = issue_types[0]
 
     # ---------- Summary ----------
     summary = issue[:80]
@@ -103,7 +112,9 @@ def enrich_issue(sender_email, issue, level, priority):
 
         "device": device,
 
-        "issue_type": issue_type,
+        "issue_type": primary_issue,
+
+        "all_issue_types": issue_types,
 
         "urgency": priority,
 

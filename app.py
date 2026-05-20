@@ -66,7 +66,17 @@ if st.button("Submit"):
         st.write(f"Resolved From: {enriched['resolution_source']}")
         st.write(f"User: {enriched['user']}")
         st.write(f"Device: {enriched['device']}")
-        st.write(f"Issue Type: {enriched['issue_type']}")
+
+        st.write(
+            f"Primary Issue Type: "
+            f"{enriched['issue_type']}"
+        )
+
+        st.write(
+            f"All Detected Issues: "
+            f"{', '.join(enriched['all_issue_types'])}"
+        )
+
         st.write(f"Assigned Department: {department}")
         st.write(f"Urgency: {enriched['urgency']}")
         st.write(f"Summary: {enriched['summary']}")
@@ -76,7 +86,8 @@ if st.button("Submit"):
 Time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 User: {enriched['user']}
 Device: {enriched['device']}
-Issue Type: {enriched['issue_type']}
+Primary Issue Type: {enriched['issue_type']}
+All Detected Issues: {', '.join(enriched['all_issue_types'])}
 Assigned Department: {department}
 Urgency: {enriched['urgency']}
 Summary: {enriched['summary']}
