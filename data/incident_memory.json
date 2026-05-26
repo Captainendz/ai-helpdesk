@@ -1,0 +1,117 @@
+[
+    {
+        "timestamp": "2026-05-25 10:51:04",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "email not syncing and i cannot connect to the internet remotely",
+        "issue_types": [
+            "email issue"
+        ],
+        "resolution": "\ud83c\udf10 VPN / NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. 1. Verify internet connectivity.\n2. 2. Restart the VPN client.\n3. 3. Re-enter company VPN credentials.\n4. 4. Ensure MFA authentication is approved.\n\n\ud83d\udd10 AUTHENTICATION TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. 1. Verify username and password.\n2. 2. Ensure CAPS LOCK is disabled.\n3. 3. Verify account is not locked.\n\n\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. 2. Re-enter mailbox credentials.\n2. 3. Restart Outlook.\n3. 4. Check mailbox storage quota.\n\n",
+        "knowledge_sources": [
+            "vpn_guide.txt",
+            "login_support.txt",
+            "email_issues.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-25 10:51:51",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "Outlook not syncing and VPN disconnecting",
+        "issue_types": [
+            "email issue",
+            "vpn issue"
+        ],
+        "resolution": "\ud83c\udf10 VPN / NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. 1. Verify internet connectivity.\n2. 2. Restart the VPN client.\n3. 3. Re-enter company VPN credentials.\n4. 4. Ensure MFA authentication is approved.\n\n\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. 2. Re-enter mailbox credentials.\n2. 3. Restart Outlook.\n3. 4. Check mailbox storage quota.\n\n",
+        "knowledge_sources": [
+            "vpn_guide.txt",
+            "email_issues.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-25 10:59:34",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "Outlook not syncing and VPN disconnecting",
+        "issue_types": [
+            "email issue",
+            "vpn issue"
+        ],
+        "resolution": "\ud83c\udf10 VPN / NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Restart the VPN client.\n3. Re-enter company VPN credentials.\n4. Ensure MFA authentication is approved.\n\n\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Re-enter mailbox credentials.\n2. Restart Outlook.\n3. Check mailbox storage quota.\n\n",
+        "knowledge_sources": [
+            "vpn_guide.txt",
+            "email_issues.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-26 09:50:57",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "Outlook email not syncing",
+        "issue_types": [
+            "email issue"
+        ],
+        "resolution": "\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Re-enter mailbox credentials.\n3. Restart Outlook.\n4. Check mailbox storage quota.\n\n",
+        "knowledge_sources": [
+            "email_issues.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-26 09:51:22",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "VPN disconnecting every few minutes",
+        "issue_types": [
+            "vpn issue"
+        ],
+        "resolution": "\ud83d\udce1 NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Forget and reconnect to WiFi network.\n2. Update network drivers.\n3. Restart the router.\n4. Move closer to the router.\n\n\ud83c\udf10 VPN / NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Restart the VPN client.\n3. Re-enter company VPN credentials.\n4. Ensure MFA authentication is approved.\n\n",
+        "knowledge_sources": [
+            "wifi_support.txt",
+            "vpn_guide.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-26 09:51:55",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "Laptop is slow and Outlook not syncing",
+        "issue_types": [
+            "email issue",
+            "performance issue"
+        ],
+        "resolution": "\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Re-enter mailbox credentials.\n3. Restart Outlook.\n4. Check mailbox storage quota.\n\n\u26a1 PERFORMANCE TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Restart the device.\n2. Close unused applications.\n3. Check available disk space.\n4. Run antivirus scan.\n\n",
+        "knowledge_sources": [
+            "email_issues.txt",
+            "performance_support.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-26 09:55:37",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "my printer is not printing",
+        "issue_types": [
+            "printer issue"
+        ],
+        "resolution": "\ud83d\udda8\ufe0f PRINTER TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify printer cable or WiFi connection.\n2. Ensure printer is powered on.\n3. Restart the printer.\n4. Clear pending print queue.\n\n",
+        "knowledge_sources": [
+            "printer_support.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-05-26 10:05:28",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "Laptop is slow and Outlook not syncing",
+        "issue_types": [
+            "email issue",
+            "performance issue"
+        ],
+        "resolution": "\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Re-enter mailbox credentials.\n3. Restart Outlook.\n4. Check mailbox storage quota.\n\n\u26a1 PERFORMANCE TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Restart the device.\n2. Close unused applications.\n3. Check available disk space.\n4. Run antivirus scan.\n\n",
+        "knowledge_sources": [
+            "email_issues.txt",
+            "performance_support.txt"
+        ]
+    }
+]
