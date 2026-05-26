@@ -5,6 +5,7 @@ from ai.classifier import classify_issue
 from rag.document_rag import search_documents
 from api.glpi_api import create_ticket
 from ai.enrichment import enrich_issue
+from ai.incident_memory import save_incident
 from datetime import datetime
 
 st.set_page_config(page_title="AI Helpdesk", layout="wide")
@@ -17,6 +18,9 @@ sender_email = st.text_input("Sender email:")
 
 # ---------- Submit ----------
 if st.button("Submit"):
+
+    # ---------- Reset displayed steps ----------
+    st.session_state.displayed_steps = set()
 
     if not issue.strip():
 
@@ -43,17 +47,10 @@ if st.button("Submit"):
         )
 
         # ---------- Search Document Vector DB ----------
-        document_result = search_documents(issue)
+        document_results = search_documents(issue)
 
         # ---------- Confidence Threshold ----------
         CONFIDENCE_THRESHOLD = 1.0
-
-        # =========================================================
-        # IMPORTANT:
-        # DO NOT overwrite issue_type using document_result content
-        # The enrichment.py already detects issue type correctly
-        # from the user's original complaint.
-        # =========================================================
 
         # ---------- Department Routing ----------
         department = route_issue(
@@ -97,58 +94,297 @@ Original Complaint: {enriched['original_complaint']}
         # ---------- L1 AI Resolution ----------
         if level == "L1":
 
-            if (
-                document_result
-                and document_result["distance"] < CONFIDENCE_THRESHOLD
-            ):
+            if document_results:
 
-                st.success(
-                    "AI found a reliable knowledge base match."
-                )
+                # ---------- Best Match ----------
+                best_result = document_results[0]
 
-                st.write(
-                    f"Vector Distance: "
-                    f"{document_result['distance']:.3f}"
-                )
-
-                # ---------- Generate AI Resolution ----------
-                ai_response = generate_response(
-                    issue,
-                    document_result["content"]
-                )
-
-                st.subheader("AI Generated Resolution")
-                st.write(ai_response)
-
-                st.subheader("Knowledge Source")
-                st.write(document_result["source"])
-
-            else:
-
-                st.warning(
-                    "No reliable AI resolution found."
-                )
-
-                st.error(
-                    "Escalating issue to GLPI."
-                )
-
-                result = create_ticket(
-                    title="AI Helpdesk Escalation",
-                    content=ticket_content,
-                    user_id=enriched["user_id"]
-                )
-
-                if "id" in result:
+                if best_result["distance"] < CONFIDENCE_THRESHOLD:
 
                     st.success(
-                        f"Ticket created in GLPI. "
-                        f"Ticket ID: {result.get('id')}"
+                        "AI found reliable knowledge base matches."
+                    )
+
+                    st.write(
+                        f"Best Vector Distance: "
+                        f"{best_result['distance']:.3f}"
+                    )
+
+                    # =====================================================
+                    # Dependency-Aware Resolution Ordering
+                    # =====================================================
+
+                    priority_map = {
+                        "wifi": 1,
+                        "network": 1,
+                        "vpn": 2,
+                        "login": 3,
+                        "authentication": 3,
+                        "email": 4,
+                        "printer": 5,
+                        "performance": 6
+                    }
+
+                    def get_priority(source_name):
+
+                        source_lower = source_name.lower()
+
+                        for keyword, priority in priority_map.items():
+
+                            if keyword in source_lower:
+
+                                return priority
+
+                        return 99
+
+                    # ---------- Sort KB Results ----------
+                    document_results.sort(
+                        key=lambda x: get_priority(
+                            x["source"]
+                        )
+                    )
+
+                    # =====================================================
+                    # STRUCTURED MULTI-ISSUE RESOLUTION
+                    # =====================================================
+
+                    st.subheader(
+                        "AI Generated Resolution"
+                    )
+
+                    full_resolution = ""
+
+                    for result in document_results:
+
+                        source_name = result["source"]
+
+                        knowledge = result["content"]
+
+                        # ---------- Generate Clean Steps ----------
+                        ai_response = generate_response(
+                            issue,
+                            knowledge
+                        )
+
+                        # =====================================================
+                        # Cross-Section Deduplication
+                        # =====================================================
+
+                        filtered_lines = []
+
+                        for line in ai_response.splitlines():
+
+                            cleaned = line.strip()
+
+                            # ---------- Keep Header ----------
+                            if (
+                                "Recommended Troubleshooting Steps"
+                                in cleaned
+                            ):
+
+                                filtered_lines.append(cleaned)
+
+                                continue
+
+                            # ---------- Skip Empty Lines ----------
+                            if not cleaned:
+
+                                continue
+
+                            # ---------- Normalize ----------
+                            normalized = cleaned.lower()
+
+                            normalized = normalized.lstrip(
+                                "1234567890. "
+                            )
+
+                            # ---------- Skip Duplicates ----------
+                            if (
+                                normalized
+                                not in st.session_state.displayed_steps
+                            ):
+
+                                filtered_lines.append(cleaned)
+
+                                st.session_state.displayed_steps.add(
+                                    normalized
+                                )
+
+                        # ---------- Rebuild Response ----------
+                        rebuilt_response = []
+
+                        step_counter = 1
+
+                        for line in filtered_lines:
+
+                            # ---------- Keep Header ----------
+                            if (
+                                "Recommended Troubleshooting Steps"
+                                in line
+                            ):
+
+                                rebuilt_response.append(line)
+
+                                rebuilt_response.append("")
+
+                                continue
+
+                            # ---------- Remove Existing Numbers ----------
+                            cleaned_line = line.lstrip(
+                                "1234567890. "
+                            )
+
+                            # ---------- Renumber Cleanly ----------
+                            rebuilt_response.append(
+                                f"{step_counter}. {cleaned_line}"
+                            )
+
+                            step_counter += 1
+
+                        # ---------- Final Clean Response ----------
+                        ai_response = "\n".join(
+                            rebuilt_response
+                        )
+
+                        # ---------- Skip Empty Sections ----------
+                        if (
+                            ai_response.strip()
+                            == "Recommended Troubleshooting Steps:"
+                        ):
+
+                            continue
+
+                        # ---------- Dynamic Section Titles ----------
+                        if "vpn" in source_name.lower():
+
+                            section_title = (
+                                "🌐 VPN / NETWORK TROUBLESHOOTING"
+                            )
+
+                        elif (
+                            "email" in source_name.lower()
+                        ):
+
+                            section_title = (
+                                "📧 EMAIL TROUBLESHOOTING"
+                            )
+
+                        elif (
+                            "login" in source_name.lower()
+                            or "authentication"
+                            in source_name.lower()
+                        ):
+
+                            section_title = (
+                                "🔐 AUTHENTICATION TROUBLESHOOTING"
+                            )
+
+                        elif (
+                            "printer" in source_name.lower()
+                        ):
+
+                            section_title = (
+                                "🖨️ PRINTER TROUBLESHOOTING"
+                            )
+
+                        elif (
+                            "wifi" in source_name.lower()
+                            or "network"
+                            in source_name.lower()
+                        ):
+
+                            section_title = (
+                                "📡 NETWORK TROUBLESHOOTING"
+                            )
+
+                        elif (
+                            "performance" in source_name.lower()
+                        ):
+
+                            section_title = (
+                                "⚡ PERFORMANCE TROUBLESHOOTING"
+                            )
+
+                        else:
+
+                            section_title = (
+                                "🛠️ GENERAL TROUBLESHOOTING"
+                            )
+
+                        # ---------- Combine Resolution ----------
+                        section_output = (
+                            f"{section_title}\n\n"
+                            f"{ai_response}\n\n"
+                        )
+
+                        full_resolution += section_output
+
+                        # ---------- Display Section ----------
+                        st.text(section_output)
+
+                    # ---------- Display Retrieved Sources ----------
+                    st.subheader("Knowledge Sources Used")
+
+                    knowledge_sources = []
+
+                    for i, result in enumerate(document_results):
+
+                        st.write(
+                            f"{i+1}. "
+                            f"{result['source']} "
+                            f"(Distance: "
+                            f"{result['distance']:.3f})"
+                        )
+
+                        knowledge_sources.append(
+                            result["source"]
+                        )
+
+                    # =====================================================
+                    # SAVE INCIDENT MEMORY
+                    # =====================================================
+
+                    save_incident(
+                        user=enriched["user"],
+                        device=enriched["device"],
+                        issue=enriched["original_complaint"],
+                        issue_types=enriched["all_issue_types"],
+                        resolution=full_resolution,
+                        knowledge_sources=knowledge_sources
                     )
 
                 else:
 
-                    st.error("Ticket creation failed.")
+                    st.warning(
+                        "No reliable AI resolution found."
+                    )
+
+                    st.error(
+                        "Escalating issue to GLPI."
+                    )
+
+                    result = create_ticket(
+                        title="AI Helpdesk Escalation",
+                        content=ticket_content,
+                        user_id=enriched["user_id"]
+                    )
+
+                    if "id" in result:
+
+                        st.success(
+                            f"Ticket created in GLPI. "
+                            f"Ticket ID: {result.get('id')}"
+                        )
+
+                    else:
+
+                        st.error("Ticket creation failed.")
+
+            else:
+
+                st.warning(
+                    "No knowledge documents found."
+                )
 
         # ---------- Escalation ----------
         else:

@@ -24,25 +24,35 @@ def search_documents(query):
     # ---------- Convert to numpy ----------
     query_vector = np.array(query_vector).astype("float32")
 
-    # ---------- Search FAISS ----------
-    distances, indices = index.search(query_vector, 1)
+    # ---------- Search Top 3 Matches ----------
+    distances, indices = index.search(query_vector, 3)
 
-    # ---------- Best match ----------
-    best_index = indices[0][0]
+    results = []
 
-    best_distance = distances[0][0]
+    # ---------- Process Results ----------
+    for i in range(len(indices[0])):
 
-    print("Best vector distance:", best_distance)
+        chunk_index = indices[0][i]
 
-    # ---------- Similarity threshold ----------
-    if best_distance < 1.5:
+        chunk_distance = distances[0][i]
 
-        best_chunk = chunks[best_index]
+        print(
+            f"Match {i+1} Distance:",
+            chunk_distance
+        )
 
-        return {
-            "source": best_chunk["source"],
-            "content": best_chunk["chunk"],
-            "distance": float(best_distance)
-        }
+        # ---------- Similarity Threshold ----------
+        if chunk_distance < 1.5:
 
-    return None
+            matched_chunk = chunks[chunk_index]
+
+            results.append({
+
+                "source": matched_chunk["source"],
+
+                "content": matched_chunk["chunk"],
+
+                "distance": float(chunk_distance)
+            })
+
+    return results
