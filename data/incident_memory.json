@@ -113,5 +113,63 @@
             "email_issues.txt",
             "performance_support.txt"
         ]
+    },
+    {
+        "timestamp": "2026-06-03 13:54:27",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "can't connect to vpn and email not synching",
+        "issue_types": [
+            "email issue",
+            "vpn issue"
+        ],
+        "resolution": "\ud83c\udf10 VPN / NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Restart the VPN client.\n3. Re-enter company VPN credentials.\n4. Ensure MFA authentication is approved.\n\n\ud83d\udd10 AUTHENTICATION TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify username and password.\n2. Ensure CAPS LOCK is disabled.\n3. Verify account is not locked.\n\n\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Re-enter mailbox credentials.\n2. Restart Outlook.\n3. Check mailbox storage quota.\n\n",
+        "knowledge_sources": [
+            "vpn_guide.txt",
+            "login_support.txt",
+            "email_issues.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-06-05 13:05:31",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "vpn not connecting and email  not synching",
+        "issue_types": [
+            "email issue",
+            "vpn issue"
+        ],
+        "resolution": "\ud83c\udf10 VPN / NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify internet connectivity.\n2. Restart the VPN client.\n3. Re-enter company VPN credentials.\n4. Ensure MFA authentication is approved.\n\n\ud83d\udd10 AUTHENTICATION TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Verify username and password.\n2. Ensure CAPS LOCK is disabled.\n3. Verify account is not locked.\n\n\ud83d\udce7 EMAIL TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Re-enter mailbox credentials.\n2. Restart Outlook.\n3. Check mailbox storage quota.\n\n",
+        "knowledge_sources": [
+            "vpn_guide.txt",
+            "login_support.txt",
+            "email_issues.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-06-05 13:07:14",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "WiFi disconnects every few minutes and production server not coming up",
+        "issue_types": [
+            "network issue"
+        ],
+        "resolution": "\ud83d\udce1 NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Forget and reconnect to WiFi network.\n2. Update network drivers.\n3. Restart the router.\n4. Move closer to the router.\n\n",
+        "knowledge_sources": [
+            "wifi_support.txt"
+        ]
+    },
+    {
+        "timestamp": "2026-06-05 13:07:24",
+        "user": "ceo",
+        "device": "CEO-LAPTOP-01",
+        "issue": "WiFi disconnects every few minutes and production server not coming up",
+        "issue_types": [
+            "network issue"
+        ],
+        "resolution": "\ud83d\udce1 NETWORK TROUBLESHOOTING\n\nRecommended Troubleshooting Steps:\n\n1. Forget and reconnect to WiFi network.\n2. Update network drivers.\n3. Restart the router.\n4. Move closer to the router.\n\n",
+        "knowledge_sources": [
+            "wifi_support.txt"
+        ]
     }
 ]
